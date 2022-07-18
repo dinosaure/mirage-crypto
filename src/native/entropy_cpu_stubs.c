@@ -17,11 +17,23 @@
 #define _rdrand_step _rdrand64_step
 #define fill_bytes(buf, bufsz, off, data) memcpy(_bp_uint8_off(buf, off), data, 8)
 
+static uint64_t mirage_crypto_rdtsc(void) {
+  uint64_t hi, lo;
+  __asm__ __volatile__ ("rdtsc" : "=a"(lo), "=d"(hi));
+  return (lo | (hi << 32));
+}
+
 #elif defined (__i386__)
 #define random_t unsigned int
 #define _rdseed_step _rdseed32_step
 #define _rdrand_step _rdrand32_step
 #define fill_bytes(buf, bufsz, off, data) memcpy(_bp_uint8_off(buf, off), data, 4)
+
+static uint64_t mirage_crypto_rdtsc(void) {
+  uint64_t ret;
+  __asm__ __volatile__ ("rdtsc" : "=A"(ret));
+  return ret;
+}
 
 #endif
 #endif /* __i386__ || __x86_64__ */
