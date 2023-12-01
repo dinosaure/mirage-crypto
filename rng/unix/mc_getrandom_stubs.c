@@ -16,7 +16,7 @@
 void raw_getrandom (uint8_t *data, size_t len) {
   arc4random_buf(data, len);
 }
-#elif defined(__linux) || defined(__GNU__)
+#elif defined(__linux) || defined(__GNU__) || defined(__COSMOPOLITAN__)
 # include <errno.h>
 // on Linux and GNU/Hurd, we use getrandom and loop
 
